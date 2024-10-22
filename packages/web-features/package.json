@@ -23,7 +23,7 @@
     "prepare": "tsc && rm types.js && tsup ./index.ts --dts-only --format=esm --out-dir=."
   },
   "devDependencies": {
-    "tsup": "^8.0.1",
+    "tsup": "^8.2.1",
     "typescript": "^5.0.4"
   }
 }
