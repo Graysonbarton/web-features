@@ -1,0 +1,21 @@
+name: Map (initial support)
+description: Map objects hold key-value pairs and remember the original insertion order of the keys.
+spec:
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map-objects
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map-constructor
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.clear
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.delete
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.entries
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.foreach
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.get
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.has
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.keys
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.set
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-get-map.prototype.size
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype.values
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-map.prototype-@@iterator
+  - https://tc39.es/ecma262/multipage/keyed-collections.html#sec-get-map-@@species
+snapshot: ecmascript-2015
+group: maps
+status:
+  compute_from: javascript.builtins.Map.Map

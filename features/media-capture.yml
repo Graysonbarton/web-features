@@ -1,0 +1,6 @@
+name: Media capture
+description: The `navigator.mediaDevices.getUserMedia()` API requests access to devices that produce audio or video streams, such as microphones or video cameras.
+spec: https://w3c.github.io/mediacapture-main/
+caniuse: stream
+status:
+  compute_from: api.MediaDevices.getUserMedia

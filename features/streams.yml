@@ -1,0 +1,42 @@
+name: Streams
+description: The streams API creates, composes, and consumes continuously generated data.
+spec: https://streams.spec.whatwg.org/
+caniuse: streams
+group: streams
+# TODO: Later support
+# - api.ReadableStreamDefaultController
+# - api.ReadableStreamDefaultController.close
+# - api.ReadableStreamDefaultController.desiredSize
+# - api.ReadableStreamDefaultController.enqueue
+# - api.ReadableStreamDefaultController.error
+# - api.ReadableStreamDefaultReader
+# - api.ReadableStreamDefaultReader.cancel
+# - api.ReadableStreamDefaultReader.closed
+# - api.ReadableStreamDefaultReader.read
+# - api.ReadableStreamDefaultReader.releaseLock
+# - api.TransformStream
+# - api.TransformStream.TransformStream
+# - api.TransformStream.readable
+# - api.TransformStream.writable
+# - api.TransformStreamDefaultController
+# - api.TransformStreamDefaultController.desiredSize
+# - api.TransformStreamDefaultController.enqueue
+# - api.TransformStreamDefaultController.error
+# - api.TransformStreamDefaultController.terminate
+# - api.WritableStream.close
+# - api.WritableStreamDefaultWriter.WritableStreamDefaultWriter
+
+# TODO: consider BYOB feature
+# - api.ReadableStreamBYOBReader
+# - api.ReadableStreamBYOBReader.ReadableStreamBYOBReader
+# - api.ReadableStreamBYOBReader.cancel
+# - api.ReadableStreamBYOBReader.closed
+# - api.ReadableStreamBYOBReader.read
+# - api.ReadableStreamBYOBReader.releaseLock
+# - api.ReadableStreamBYOBRequest
+# - api.ReadableStreamBYOBRequest.respond
+# - api.ReadableStreamBYOBRequest.respondWithNewView
+# - api.ReadableStreamBYOBRequest.view
+
+# TODO: consider abortable stream feature
+# - api.WritableStreamDefaultController.signal

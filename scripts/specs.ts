@@ -2,14 +2,22 @@ import assert from "node:assert/strict";
 
 import webSpecs from 'web-specs' assert { type: 'json' };
 
-import features from '../index.js';
+import { features } from '../index.js';
 
-const specUrls: URL[] = webSpecs.flatMap(spec => {
-    return [
-        new URL(spec.nightly?.url ?? spec.url),
-        ...(spec.nightly?.pages ?? []).map(page => new URL(page))
-    ]
-});
+// Specs needs to be in "good standing". Nightly URLs are used if available,
+// otherwise the snapshot/versioned URL is used. See browser-specs/web-specs
+// docs for more details:
+// https://github.com/w3c/browser-specs/blob/main/README.md#standing
+// https://github.com/w3c/browser-specs/blob/main/README.md#nightly
+// https://github.com/w3c/browser-specs/blob/main/README.md#url
+const specUrls: URL[] = webSpecs
+    .filter((spec) => spec.standing === 'good')
+    .flatMap(spec => {
+        return [
+            new URL(spec.nightly?.url ?? spec.url),
+            ...(spec.nightly?.pages ?? []).map(page => new URL(page))
+        ]
+    });
 
 type allowlistItem = [url: string, message: string];
 const defaultAllowlist: allowlistItem[] = [
@@ -18,8 +26,12 @@ const defaultAllowlist: allowlistItem[] = [
     //     "Allowed because…. Remove this exception when https://example.com/org/repo/pull/1234 merges."
     // ]
     [
-        "https://learn.microsoft.com/en-us/typography/opentype/otspec191alpha/colr",
-        "Allowed because COLRv1 is shipping in Chrome and Firefox. Remove this exception when https://github.com/w3c/browser-specs/pull/1211 is released."
+        "https://wicg.github.io/controls-list/",
+        "Allowed because it's shipped in Chrome. Remove this exception if https://github.com/whatwg/html/pull/6715 is merged."
+    ],
+    [
+        "https://www.w3.org/TR/webnn/",
+        "Allowed because this URL actually serves the same content as the Editor Draft URL, and because the ED URL is a bit verbose. See https://github.com/mdn/browser-compat-data/pull/22569#issuecomment-1992632118."
     ]
 ];
 
@@ -51,7 +63,22 @@ function testIsOK() {
 };
 testIsOK();
 
-let checked = 0;
+
+/**
+ * Print an array of potential spec URLs.
+ */
+function suggestSpecs(bad: URL): void {
+    const searchBy = bad.pathname.replaceAll("/", "");
+    const suggestions = specUrls.filter((specUrl) => specUrl.toString().includes(searchBy)).map(u => `- ${u}`);
+    if (suggestions.length > 0) {
+        console.warn("Did you mean one of these?");
+        console.warn(`${suggestions.join('\n')}`);
+        console.warn();
+    }
+}
+
+let checkedFeatures = 0;
+let checkedSpecs = 0;
 let errors = 0;
 
 // Ensure every exception in defaultAllowlist is needed
@@ -66,18 +93,26 @@ for (const [allowedUrl, message] of defaultAllowlist) {
 for (const [id, data] of Object.entries(features)) {
     const specs = Array.isArray(data.spec) ? data.spec : [data.spec];
     for (const spec of specs) {
-        const url = new URL(spec);
-        if (!isOK(url)) {
-            console.error(`URL for ${id} not in web-specs: ${url.toString()}`);
+        let url: URL;
+        try {
+            url = new URL(spec);
+        } catch (error) {
+            console.error(`Invalid URL "${spec}" found in spec for "${data.name}"`);
             errors++;
         }
-        checked++;
+        if (url && !isOK(url)) {
+            console.error(`URL for ${id} not in web-specs: ${url.toString()}`);
+            suggestSpecs(url);
+            errors++;
+        }
+        checkedSpecs++;
     }
+    checkedFeatures++;
 }
 
 if (errors) {
-    console.log(`\n${checked} features checked, found ${errors} error(s)`);
+    console.log(`\nChecked ${checkedSpecs} specs in ${checkedFeatures} features, found ${errors} error(s)`);
     process.exit(1);
 } else {
-    console.log(`${checked} features checked, no errors`);
+    console.log(`\nChecked ${checkedSpecs} specs in ${checkedFeatures} features, no errors`);
 }

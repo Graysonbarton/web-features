@@ -1,0 +1,4 @@
+name: Push messages
+description: The Push API subscribes to and receives server-initiated messages. Subscribers receive pushed messages in the background, even after periods inactive or offline.
+spec: https://w3c.github.io/push-api/
+caniuse: push-api
